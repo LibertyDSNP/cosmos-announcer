@@ -16,6 +16,7 @@ export interface IbcBatchPacketData {
   announcementType: string
   fileHash: string
   fileUrl: string
+  creator: string
 }
 
 /** IbcBatchPacketAck defines a struct for the packet acknowledgment */
@@ -133,7 +134,7 @@ export const NoData = {
   }
 }
 
-const baseIbcBatchPacketData: object = { announcementType: '', fileHash: '', fileUrl: '' }
+const baseIbcBatchPacketData: object = { announcementType: '', fileHash: '', fileUrl: '', creator: '' }
 
 export const IbcBatchPacketData = {
   encode(message: IbcBatchPacketData, writer: Writer = Writer.create()): Writer {
@@ -145,6 +146,9 @@ export const IbcBatchPacketData = {
     }
     if (message.fileUrl !== '') {
       writer.uint32(26).string(message.fileUrl)
+    }
+    if (message.creator !== '') {
+      writer.uint32(34).string(message.creator)
     }
     return writer
   },
@@ -164,6 +168,9 @@ export const IbcBatchPacketData = {
           break
         case 3:
           message.fileUrl = reader.string()
+          break
+        case 4:
+          message.creator = reader.string()
           break
         default:
           reader.skipType(tag & 7)
@@ -190,6 +197,11 @@ export const IbcBatchPacketData = {
     } else {
       message.fileUrl = ''
     }
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator)
+    } else {
+      message.creator = ''
+    }
     return message
   },
 
@@ -198,6 +210,7 @@ export const IbcBatchPacketData = {
     message.announcementType !== undefined && (obj.announcementType = message.announcementType)
     message.fileHash !== undefined && (obj.fileHash = message.fileHash)
     message.fileUrl !== undefined && (obj.fileUrl = message.fileUrl)
+    message.creator !== undefined && (obj.creator = message.creator)
     return obj
   },
 
@@ -217,6 +230,11 @@ export const IbcBatchPacketData = {
       message.fileUrl = object.fileUrl
     } else {
       message.fileUrl = ''
+    }
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator
+    } else {
+      message.creator = ''
     }
     return message
   }

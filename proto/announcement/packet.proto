@@ -21,6 +21,7 @@ message IbcBatchPacketData {
   string announcementType = 1;
   string fileHash = 2;
   string fileUrl = 3;
+  string creator = 4;
 }
 
 // IbcBatchPacketAck defines a struct for the packet acknowledgment

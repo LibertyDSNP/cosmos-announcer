@@ -103,7 +103,7 @@ export const NoData = {
         return message;
     }
 };
-const baseIbcBatchPacketData = { announcementType: '', fileHash: '', fileUrl: '' };
+const baseIbcBatchPacketData = { announcementType: '', fileHash: '', fileUrl: '', creator: '' };
 export const IbcBatchPacketData = {
     encode(message, writer = Writer.create()) {
         if (message.announcementType !== '') {
@@ -114,6 +114,9 @@ export const IbcBatchPacketData = {
         }
         if (message.fileUrl !== '') {
             writer.uint32(26).string(message.fileUrl);
+        }
+        if (message.creator !== '') {
+            writer.uint32(34).string(message.creator);
         }
         return writer;
     },
@@ -132,6 +135,9 @@ export const IbcBatchPacketData = {
                     break;
                 case 3:
                     message.fileUrl = reader.string();
+                    break;
+                case 4:
+                    message.creator = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -160,6 +166,12 @@ export const IbcBatchPacketData = {
         else {
             message.fileUrl = '';
         }
+        if (object.creator !== undefined && object.creator !== null) {
+            message.creator = String(object.creator);
+        }
+        else {
+            message.creator = '';
+        }
         return message;
     },
     toJSON(message) {
@@ -167,6 +179,7 @@ export const IbcBatchPacketData = {
         message.announcementType !== undefined && (obj.announcementType = message.announcementType);
         message.fileHash !== undefined && (obj.fileHash = message.fileHash);
         message.fileUrl !== undefined && (obj.fileUrl = message.fileUrl);
+        message.creator !== undefined && (obj.creator = message.creator);
         return obj;
     },
     fromPartial(object) {
@@ -188,6 +201,12 @@ export const IbcBatchPacketData = {
         }
         else {
             message.fileUrl = '';
+        }
+        if (object.creator !== undefined && object.creator !== null) {
+            message.creator = object.creator;
+        }
+        else {
+            message.creator = '';
         }
         return message;
     }

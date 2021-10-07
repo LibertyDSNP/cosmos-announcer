@@ -12,6 +12,7 @@ export interface IbcBatchPacketData {
     announcementType: string;
     fileHash: string;
     fileUrl: string;
+    creator: string;
 }
 /** IbcBatchPacketAck defines a struct for the packet acknowledgment */
 export interface IbcBatchPacketAck {

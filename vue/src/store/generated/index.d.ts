@@ -1,4 +1,5 @@
 declare const _default: {
+    Liberty30UsAppChainLiberty30UsappchainAnnouncement: (store: any) => void;
     CosmosCosmosSdkCosmosAuthzV1Beta1: (store: any) => void;
     CosmosCosmosSdkCosmosBankV1Beta1: (store: any) => void;
     CosmosCosmosSdkCosmosCrisisV1Beta1: (store: any) => void;

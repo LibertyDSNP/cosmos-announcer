@@ -142,7 +142,26 @@ func (am AppModule) OnRecvPacket(
 
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
-	// this line is used by starport scaffolding # ibc/packet/module/recv
+	case *types.AnnouncementPacketData_IbcBatchPacket:
+		packetAck, err := am.keeper.OnRecvIbcBatchPacket(ctx, modulePacket, *packet.IbcBatchPacket)
+		if err != nil {
+			ack = channeltypes.NewErrorAcknowledgement(err.Error())
+		} else {
+			// Encode packet acknowledgment
+			packetAckBytes, err := types.ModuleCdc.MarshalJSON(&packetAck)
+			if err != nil {
+				return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error()).Error())
+			}
+			ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
+		}
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(
+				types.EventTypeIbcBatchPacket,
+				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
+			),
+		)
+		// this line is used by starport scaffolding # ibc/packet/module/recv
 	default:
 		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
 		return channeltypes.NewErrorAcknowledgement(errMsg)
@@ -175,7 +194,13 @@ func (am AppModule) OnAcknowledgementPacket(
 
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
-	// this line is used by starport scaffolding # ibc/packet/module/ack
+	case *types.AnnouncementPacketData_IbcBatchPacket:
+		err := am.keeper.OnAcknowledgementIbcBatchPacket(ctx, modulePacket, *packet.IbcBatchPacket, ack)
+		if err != nil {
+			return nil, err
+		}
+		eventType = types.EventTypeIbcBatchPacket
+		// this line is used by starport scaffolding # ibc/packet/module/ack
 	default:
 		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
@@ -224,7 +249,12 @@ func (am AppModule) OnTimeoutPacket(
 
 	// Dispatch packet
 	switch packet := modulePacketData.Packet.(type) {
-	// this line is used by starport scaffolding # ibc/packet/module/timeout
+	case *types.AnnouncementPacketData_IbcBatchPacket:
+		err := am.keeper.OnTimeoutIbcBatchPacket(ctx, modulePacket, *packet.IbcBatchPacket)
+		if err != nil {
+			return nil, err
+		}
+		// this line is used by starport scaffolding # ibc/packet/module/timeout
 	default:
 		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
 		return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)

@@ -9,10 +9,22 @@ message AnnouncementPacketData {
     oneof packet {
         NoData noData = 1;
         // this line is used by starport scaffolding # ibc/packet/proto/field
+				IbcBatchPacketData ibcBatchPacket = 2; // this line is used by starport scaffolding # ibc/packet/proto/field/number
     }
 }
 
 message NoData {
 }
 
+// IbcBatchPacketData defines a struct for the packet payload
+message IbcBatchPacketData {
+  string announcementType = 1;
+  string fileHash = 2;
+  string fileUrl = 3;
+}
+
+// IbcBatchPacketAck defines a struct for the packet acknowledgment
+message IbcBatchPacketAck {
+	  string batchId = 1;
+}
 // this line is used by starport scaffolding # ibc/packet/proto/message

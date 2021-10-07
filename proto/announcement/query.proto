@@ -4,6 +4,7 @@ package Liberty30.usappchain.announcement;
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "announcement/broadcast.proto";
+import "announcement/sent_announcement.proto";
 // this line is used by starport scaffolding # 1
 import "gogoproto/gogo.proto";
 
@@ -19,6 +20,16 @@ service Query {
 	// Queries a list of broadcast items.
 	rpc BroadcastAll(QueryAllBroadcastRequest) returns (QueryAllBroadcastResponse) {
 		option (google.api.http).get = "/Liberty30/usappchain/announcement/broadcast";
+	}
+
+// Queries a sentAnnouncement by id.
+	rpc SentAnnouncement(QueryGetSentAnnouncementRequest) returns (QueryGetSentAnnouncementResponse) {
+		option (google.api.http).get = "/Liberty30/usappchain/announcement/sentAnnouncement/{id}";
+	}
+
+	// Queries a list of sentAnnouncement items.
+	rpc SentAnnouncementAll(QueryAllSentAnnouncementRequest) returns (QueryAllSentAnnouncementResponse) {
+		option (google.api.http).get = "/Liberty30/usappchain/announcement/sentAnnouncement";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -38,6 +49,23 @@ message QueryAllBroadcastRequest {
 
 message QueryAllBroadcastResponse {
 	repeated Broadcast Broadcast = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetSentAnnouncementRequest {
+	uint64 id = 1;
+}
+
+message QueryGetSentAnnouncementResponse {
+	SentAnnouncement SentAnnouncement = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllSentAnnouncementRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllSentAnnouncementResponse {
+	repeated SentAnnouncement SentAnnouncement = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

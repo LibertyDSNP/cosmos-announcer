@@ -1,0 +1,13 @@
+syntax = "proto3";
+package Liberty30.usappchain.announcement;
+
+option go_package = "github.com/Liberty30/us-app-chain/x/announcement/types";
+
+import "gogoproto/gogo.proto";
+
+
+message SentAnnouncement {
+  uint64 id = 1;
+  string batchId = 2; 
+  
+}

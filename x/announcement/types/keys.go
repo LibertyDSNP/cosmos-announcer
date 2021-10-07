@@ -36,3 +36,8 @@ const (
 	BroadcastKey      = "Broadcast-value-"
 	BroadcastCountKey = "Broadcast-count-"
 )
+
+const (
+	SentAnnouncementKey      = "SentAnnouncement-value-"
+	SentAnnouncementCountKey = "SentAnnouncement-count-"
+)

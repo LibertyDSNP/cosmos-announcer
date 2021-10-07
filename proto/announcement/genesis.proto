@@ -2,6 +2,7 @@ syntax = "proto3";
 package Liberty30.usappchain.announcement;
 
 import "announcement/broadcast.proto";
+import "announcement/sent_announcement.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 import "gogoproto/gogo.proto";
 
@@ -12,5 +13,7 @@ message GenesisState {
     string port_id = 1;
   repeated Broadcast broadcastList = 2 [(gogoproto.nullable) = false];
   uint64 broadcastCount = 3;
+  repeated SentAnnouncement sentAnnouncementList = 4 [(gogoproto.nullable) = false];
+  uint64 sentAnnouncementCount = 5;
   // this line is used by starport scaffolding # genesis/proto/state
 }

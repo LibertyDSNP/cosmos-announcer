@@ -87,6 +87,9 @@ import (
 	"github.com/tendermint/spm/openapiconsole"
 
 	"github.com/Liberty30/us-app-chain/docs"
+	announcementmodule "github.com/Liberty30/us-app-chain/x/announcement"
+	announcementmodulekeeper "github.com/Liberty30/us-app-chain/x/announcement/keeper"
+	announcementmoduletypes "github.com/Liberty30/us-app-chain/x/announcement/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 
@@ -137,6 +140,7 @@ var (
 		evidence.AppModuleBasic{},
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
+		announcementmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -205,6 +209,8 @@ type App struct {
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 
+	ScopedAnnouncementKeeper capabilitykeeper.ScopedKeeper
+	AnnouncementKeeper       announcementmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// the module manager
@@ -238,6 +244,7 @@ func New(
 		minttypes.StoreKey, distrtypes.StoreKey, slashingtypes.StoreKey,
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
+		announcementmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -336,11 +343,24 @@ func New(
 		&stakingKeeper, govRouter,
 	)
 
+	scopedAnnouncementKeeper := app.CapabilityKeeper.ScopeToModule(announcementmoduletypes.ModuleName)
+	app.ScopedAnnouncementKeeper = scopedAnnouncementKeeper
+	app.AnnouncementKeeper = *announcementmodulekeeper.NewKeeper(
+		appCodec,
+		keys[announcementmoduletypes.StoreKey],
+		keys[announcementmoduletypes.MemStoreKey],
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedAnnouncementKeeper,
+	)
+	announcementModule := announcementmodule.NewAppModule(appCodec, app.AnnouncementKeeper)
+
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// Create static IBC router, add transfer route, then set and seal it
 	ibcRouter := ibcporttypes.NewRouter()
 	ibcRouter.AddRoute(ibctransfertypes.ModuleName, transferModule)
+	ibcRouter.AddRoute(announcementmoduletypes.ModuleName, announcementModule)
 	// this line is used by starport scaffolding # ibc/app/router
 	app.IBCKeeper.SetRouter(ibcRouter)
 
@@ -374,6 +394,7 @@ func New(
 		ibc.NewAppModule(app.IBCKeeper),
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
+		announcementModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -408,6 +429,7 @@ func New(
 		genutiltypes.ModuleName,
 		evidencetypes.ModuleName,
 		ibctransfertypes.ModuleName,
+		announcementmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -595,6 +617,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(crisistypes.ModuleName)
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
+	paramsKeeper.Subspace(announcementmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

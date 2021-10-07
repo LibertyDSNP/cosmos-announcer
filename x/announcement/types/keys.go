@@ -41,3 +41,8 @@ const (
 	SentAnnouncementKey      = "SentAnnouncement-value-"
 	SentAnnouncementCountKey = "SentAnnouncement-count-"
 )
+
+const (
+	TimeoutAnnouncementKey      = "TimeoutAnnouncement-value-"
+	TimeoutAnnouncementCountKey = "TimeoutAnnouncement-count-"
+)

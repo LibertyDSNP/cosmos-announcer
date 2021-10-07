@@ -11,9 +11,10 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default Capability genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		PortId:               PortID,
-		BroadcastList:        []Broadcast{},
-		SentAnnouncementList: []SentAnnouncement{},
+		PortId:                  PortID,
+		BroadcastList:           []Broadcast{},
+		SentAnnouncementList:    []SentAnnouncement{},
+		TimeoutAnnouncementList: []TimeoutAnnouncement{},
 		// this line is used by starport scaffolding # genesis/types/default
 	}
 }
@@ -47,6 +48,18 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("sentAnnouncement id should be lower or equal than the last id")
 		}
 		sentAnnouncementIdMap[elem.Id] = true
+	}
+	// Check for duplicated ID in timeoutAnnouncement
+	timeoutAnnouncementIdMap := make(map[uint64]bool)
+	timeoutAnnouncementCount := gs.GetTimeoutAnnouncementCount()
+	for _, elem := range gs.TimeoutAnnouncementList {
+		if _, ok := timeoutAnnouncementIdMap[elem.Id]; ok {
+			return fmt.Errorf("duplicated id for timeoutAnnouncement")
+		}
+		if elem.Id >= timeoutAnnouncementCount {
+			return fmt.Errorf("timeoutAnnouncement id should be lower or equal than the last id")
+		}
+		timeoutAnnouncementIdMap[elem.Id] = true
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

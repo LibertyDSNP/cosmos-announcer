@@ -40,6 +40,15 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 				SentAnnouncementCount: 2,
+				TimeoutAnnouncementList: []types.TimeoutAnnouncement{
+					{
+						Id: 0,
+					},
+					{
+						Id: 1,
+					},
+				},
+				TimeoutAnnouncementCount: 2,
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -93,6 +102,32 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 				SentAnnouncementCount: 0,
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated timeoutAnnouncement",
+			genState: &types.GenesisState{
+				TimeoutAnnouncementList: []types.TimeoutAnnouncement{
+					{
+						Id: 0,
+					},
+					{
+						Id: 0,
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "invalid timeoutAnnouncement count",
+			genState: &types.GenesisState{
+				TimeoutAnnouncementList: []types.TimeoutAnnouncement{
+					{
+						Id: 1,
+					},
+				},
+				TimeoutAnnouncementCount: 0,
 			},
 			valid: false,
 		},

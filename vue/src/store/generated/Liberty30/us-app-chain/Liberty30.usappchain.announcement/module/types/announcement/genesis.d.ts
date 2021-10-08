@@ -2,6 +2,7 @@ import { Writer, Reader } from 'protobufjs/minimal';
 import { Broadcast } from '../announcement/broadcast';
 import { SentAnnouncement } from '../announcement/sent_announcement';
 import { TimeoutAnnouncement } from '../announcement/timeout_announcement';
+import { Publication } from '../announcement/publication';
 export declare const protobufPackage = "Liberty30.usappchain.announcement";
 /** GenesisState defines the announcement module's genesis state. */
 export interface GenesisState {
@@ -11,8 +12,10 @@ export interface GenesisState {
     sentAnnouncementList: SentAnnouncement[];
     sentAnnouncementCount: number;
     timeoutAnnouncementList: TimeoutAnnouncement[];
-    /** this line is used by starport scaffolding # genesis/proto/state */
     timeoutAnnouncementCount: number;
+    publicationList: Publication[];
+    /** this line is used by starport scaffolding # genesis/proto/state */
+    publicationCount: number;
 }
 export declare const GenesisState: {
     encode(message: GenesisState, writer?: Writer): Writer;

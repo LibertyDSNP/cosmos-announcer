@@ -7,8 +7,29 @@ export interface AnnouncementBroadcast {
     signature?: string;
 }
 export declare type AnnouncementMsgSendIbcBatchResponse = object;
+export interface AnnouncementPublication {
+    /** @format uint64 */
+    id?: string;
+    batchId?: string;
+    announcementType?: string;
+    fileHash?: string;
+    fileUrl?: string;
+}
 export interface AnnouncementQueryAllBroadcastResponse {
     Broadcast?: AnnouncementBroadcast[];
+    /**
+     * PageResponse is to be embedded in gRPC response messages where the
+     * corresponding request message has used PageRequest.
+     *
+     *  message SomeResponse {
+     *          repeated Bar results = 1;
+     *          PageResponse page = 2;
+     *  }
+     */
+    pagination?: V1Beta1PageResponse;
+}
+export interface AnnouncementQueryAllPublicationResponse {
+    Publication?: AnnouncementPublication[];
     /**
      * PageResponse is to be embedded in gRPC response messages where the
      * corresponding request message has used PageRequest.
@@ -48,6 +69,9 @@ export interface AnnouncementQueryAllTimeoutAnnouncementResponse {
 }
 export interface AnnouncementQueryGetBroadcastResponse {
     Broadcast?: AnnouncementBroadcast;
+}
+export interface AnnouncementQueryGetPublicationResponse {
+    Publication?: AnnouncementPublication;
 }
 export interface AnnouncementQueryGetSentAnnouncementResponse {
     SentAnnouncement?: AnnouncementSentAnnouncement;
@@ -208,6 +232,30 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      * @request GET:/Liberty30/usappchain/announcement/broadcast/{id}
      */
     queryBroadcast: (id: string, params?: RequestParams) => Promise<HttpResponse<AnnouncementQueryGetBroadcastResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryPublicationAll
+     * @summary Queries a list of publication items.
+     * @request GET:/Liberty30/usappchain/announcement/publication
+     */
+    queryPublicationAll: (query?: {
+        "pagination.key"?: string;
+        "pagination.offset"?: string;
+        "pagination.limit"?: string;
+        "pagination.countTotal"?: boolean;
+        "pagination.reverse"?: boolean;
+    }, params?: RequestParams) => Promise<HttpResponse<AnnouncementQueryAllPublicationResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryPublication
+     * @summary Queries a publication by id.
+     * @request GET:/Liberty30/usappchain/announcement/publication/{id}
+     */
+    queryPublication: (id: string, params?: RequestParams) => Promise<HttpResponse<AnnouncementQueryGetPublicationResponse, RpcStatus>>;
     /**
      * No description
      *

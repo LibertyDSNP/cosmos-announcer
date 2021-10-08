@@ -169,6 +169,35 @@ export class Api extends HttpClient {
          * No description
          *
          * @tags Query
+         * @name QueryPublicationAll
+         * @summary Queries a list of publication items.
+         * @request GET:/Liberty30/usappchain/announcement/publication
+         */
+        this.queryPublicationAll = (query, params = {}) => this.request({
+            path: `/Liberty30/usappchain/announcement/publication`,
+            method: "GET",
+            query: query,
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryPublication
+         * @summary Queries a publication by id.
+         * @request GET:/Liberty30/usappchain/announcement/publication/{id}
+         */
+        this.queryPublication = (id, params = {}) => this.request({
+            path: `/Liberty30/usappchain/announcement/publication/${id}`,
+            method: "GET",
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
          * @name QuerySentAnnouncementAll
          * @summary Queries a list of sentAnnouncement items.
          * @request GET:/Liberty30/usappchain/announcement/sentAnnouncement

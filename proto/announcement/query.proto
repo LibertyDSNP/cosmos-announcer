@@ -6,6 +6,7 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "announcement/broadcast.proto";
 import "announcement/sent_announcement.proto";
 import "announcement/timeout_announcement.proto";
+import "announcement/publication.proto";
 // this line is used by starport scaffolding # 1
 import "gogoproto/gogo.proto";
 
@@ -41,6 +42,16 @@ service Query {
 	// Queries a list of timeoutAnnouncement items.
 	rpc TimeoutAnnouncementAll(QueryAllTimeoutAnnouncementRequest) returns (QueryAllTimeoutAnnouncementResponse) {
 		option (google.api.http).get = "/Liberty30/usappchain/announcement/timeoutAnnouncement";
+	}
+
+// Queries a publication by id.
+	rpc Publication(QueryGetPublicationRequest) returns (QueryGetPublicationResponse) {
+		option (google.api.http).get = "/Liberty30/usappchain/announcement/publication/{id}";
+	}
+
+	// Queries a list of publication items.
+	rpc PublicationAll(QueryAllPublicationRequest) returns (QueryAllPublicationResponse) {
+		option (google.api.http).get = "/Liberty30/usappchain/announcement/publication";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -94,6 +105,23 @@ message QueryAllTimeoutAnnouncementRequest {
 
 message QueryAllTimeoutAnnouncementResponse {
 	repeated TimeoutAnnouncement TimeoutAnnouncement = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetPublicationRequest {
+	uint64 id = 1;
+}
+
+message QueryGetPublicationResponse {
+	Publication Publication = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllPublicationRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllPublicationResponse {
+	repeated Publication Publication = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

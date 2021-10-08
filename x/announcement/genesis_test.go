@@ -39,6 +39,15 @@ func TestGenesis(t *testing.T) {
 			},
 		},
 		TimeoutAnnouncementCount: 2,
+		PublicationList: []types.Publication{
+			{
+				Id: 0,
+			},
+			{
+				Id: 1,
+			},
+		},
+		PublicationCount: 2,
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -57,5 +66,8 @@ func TestGenesis(t *testing.T) {
 	require.Len(t, got.TimeoutAnnouncementList, len(genesisState.TimeoutAnnouncementList))
 	require.Subset(t, genesisState.TimeoutAnnouncementList, got.TimeoutAnnouncementList)
 	require.Equal(t, genesisState.TimeoutAnnouncementCount, got.TimeoutAnnouncementCount)
+	require.Len(t, got.PublicationList, len(genesisState.PublicationList))
+	require.Subset(t, genesisState.PublicationList, got.PublicationList)
+	require.Equal(t, genesisState.PublicationCount, got.PublicationCount)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

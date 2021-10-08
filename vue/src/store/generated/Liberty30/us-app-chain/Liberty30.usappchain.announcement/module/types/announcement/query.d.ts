@@ -3,6 +3,7 @@ import { Broadcast } from '../announcement/broadcast';
 import { PageRequest, PageResponse } from '../cosmos/base/query/v1beta1/pagination';
 import { SentAnnouncement } from '../announcement/sent_announcement';
 import { TimeoutAnnouncement } from '../announcement/timeout_announcement';
+import { Publication } from '../announcement/publication';
 export declare const protobufPackage = "Liberty30.usappchain.announcement";
 export interface QueryGetBroadcastRequest {
     id: number;
@@ -41,6 +42,19 @@ export interface QueryAllTimeoutAnnouncementRequest {
 }
 export interface QueryAllTimeoutAnnouncementResponse {
     TimeoutAnnouncement: TimeoutAnnouncement[];
+    pagination: PageResponse | undefined;
+}
+export interface QueryGetPublicationRequest {
+    id: number;
+}
+export interface QueryGetPublicationResponse {
+    Publication: Publication | undefined;
+}
+export interface QueryAllPublicationRequest {
+    pagination: PageRequest | undefined;
+}
+export interface QueryAllPublicationResponse {
+    Publication: Publication[];
     pagination: PageResponse | undefined;
 }
 export declare const QueryGetBroadcastRequest: {
@@ -127,6 +141,34 @@ export declare const QueryAllTimeoutAnnouncementResponse: {
     toJSON(message: QueryAllTimeoutAnnouncementResponse): unknown;
     fromPartial(object: DeepPartial<QueryAllTimeoutAnnouncementResponse>): QueryAllTimeoutAnnouncementResponse;
 };
+export declare const QueryGetPublicationRequest: {
+    encode(message: QueryGetPublicationRequest, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): QueryGetPublicationRequest;
+    fromJSON(object: any): QueryGetPublicationRequest;
+    toJSON(message: QueryGetPublicationRequest): unknown;
+    fromPartial(object: DeepPartial<QueryGetPublicationRequest>): QueryGetPublicationRequest;
+};
+export declare const QueryGetPublicationResponse: {
+    encode(message: QueryGetPublicationResponse, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): QueryGetPublicationResponse;
+    fromJSON(object: any): QueryGetPublicationResponse;
+    toJSON(message: QueryGetPublicationResponse): unknown;
+    fromPartial(object: DeepPartial<QueryGetPublicationResponse>): QueryGetPublicationResponse;
+};
+export declare const QueryAllPublicationRequest: {
+    encode(message: QueryAllPublicationRequest, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): QueryAllPublicationRequest;
+    fromJSON(object: any): QueryAllPublicationRequest;
+    toJSON(message: QueryAllPublicationRequest): unknown;
+    fromPartial(object: DeepPartial<QueryAllPublicationRequest>): QueryAllPublicationRequest;
+};
+export declare const QueryAllPublicationResponse: {
+    encode(message: QueryAllPublicationResponse, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): QueryAllPublicationResponse;
+    fromJSON(object: any): QueryAllPublicationResponse;
+    toJSON(message: QueryAllPublicationResponse): unknown;
+    fromPartial(object: DeepPartial<QueryAllPublicationResponse>): QueryAllPublicationResponse;
+};
 /** Query defines the gRPC querier service. */
 export interface Query {
     /** Queries a broadcast by id. */
@@ -141,6 +183,10 @@ export interface Query {
     TimeoutAnnouncement(request: QueryGetTimeoutAnnouncementRequest): Promise<QueryGetTimeoutAnnouncementResponse>;
     /** Queries a list of timeoutAnnouncement items. */
     TimeoutAnnouncementAll(request: QueryAllTimeoutAnnouncementRequest): Promise<QueryAllTimeoutAnnouncementResponse>;
+    /** Queries a publication by id. */
+    Publication(request: QueryGetPublicationRequest): Promise<QueryGetPublicationResponse>;
+    /** Queries a list of publication items. */
+    PublicationAll(request: QueryAllPublicationRequest): Promise<QueryAllPublicationResponse>;
 }
 export declare class QueryClientImpl implements Query {
     private readonly rpc;
@@ -151,6 +197,8 @@ export declare class QueryClientImpl implements Query {
     SentAnnouncementAll(request: QueryAllSentAnnouncementRequest): Promise<QueryAllSentAnnouncementResponse>;
     TimeoutAnnouncement(request: QueryGetTimeoutAnnouncementRequest): Promise<QueryGetTimeoutAnnouncementResponse>;
     TimeoutAnnouncementAll(request: QueryAllTimeoutAnnouncementRequest): Promise<QueryAllTimeoutAnnouncementResponse>;
+    Publication(request: QueryGetPublicationRequest): Promise<QueryGetPublicationResponse>;
+    PublicationAll(request: QueryAllPublicationRequest): Promise<QueryAllPublicationResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

@@ -4,6 +4,7 @@ package Liberty30.usappchain.announcement;
 import "announcement/broadcast.proto";
 import "announcement/sent_announcement.proto";
 import "announcement/timeout_announcement.proto";
+import "announcement/publication.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 import "gogoproto/gogo.proto";
 
@@ -18,5 +19,7 @@ message GenesisState {
   uint64 sentAnnouncementCount = 5;
   repeated TimeoutAnnouncement timeoutAnnouncementList = 6 [(gogoproto.nullable) = false];
   uint64 timeoutAnnouncementCount = 7;
+  repeated Publication publicationList = 8 [(gogoproto.nullable) = false];
+  uint64 publicationCount = 9;
   // this line is used by starport scaffolding # genesis/proto/state
 }

@@ -49,6 +49,15 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 				TimeoutAnnouncementCount: 2,
+				PublicationList: []types.Publication{
+					{
+						Id: 0,
+					},
+					{
+						Id: 1,
+					},
+				},
+				PublicationCount: 2,
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -128,6 +137,32 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 				TimeoutAnnouncementCount: 0,
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated publication",
+			genState: &types.GenesisState{
+				PublicationList: []types.Publication{
+					{
+						Id: 0,
+					},
+					{
+						Id: 0,
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "invalid publication count",
+			genState: &types.GenesisState{
+				PublicationList: []types.Publication{
+					{
+						Id: 1,
+					},
+				},
+				PublicationCount: 0,
 			},
 			valid: false,
 		},

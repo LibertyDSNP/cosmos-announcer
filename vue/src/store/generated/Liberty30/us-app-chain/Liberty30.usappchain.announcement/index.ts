@@ -7,11 +7,12 @@ import { AnnouncementPacketData } from "./module/types/announcement/packet"
 import { NoData } from "./module/types/announcement/packet"
 import { IbcBatchPacketData } from "./module/types/announcement/packet"
 import { IbcBatchPacketAck } from "./module/types/announcement/packet"
+import { Publication } from "./module/types/announcement/publication"
 import { SentAnnouncement } from "./module/types/announcement/sent_announcement"
 import { TimeoutAnnouncement } from "./module/types/announcement/timeout_announcement"
 
 
-export { Broadcast, AnnouncementPacketData, NoData, IbcBatchPacketData, IbcBatchPacketAck, SentAnnouncement, TimeoutAnnouncement };
+export { Broadcast, AnnouncementPacketData, NoData, IbcBatchPacketData, IbcBatchPacketAck, Publication, SentAnnouncement, TimeoutAnnouncement };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -55,6 +56,8 @@ const getDefaultState = () => {
 				SentAnnouncementAll: {},
 				TimeoutAnnouncement: {},
 				TimeoutAnnouncementAll: {},
+				Publication: {},
+				PublicationAll: {},
 				
 				_Structure: {
 						Broadcast: getStructure(Broadcast.fromPartial({})),
@@ -62,6 +65,7 @@ const getDefaultState = () => {
 						NoData: getStructure(NoData.fromPartial({})),
 						IbcBatchPacketData: getStructure(IbcBatchPacketData.fromPartial({})),
 						IbcBatchPacketAck: getStructure(IbcBatchPacketAck.fromPartial({})),
+						Publication: getStructure(Publication.fromPartial({})),
 						SentAnnouncement: getStructure(SentAnnouncement.fromPartial({})),
 						TimeoutAnnouncement: getStructure(TimeoutAnnouncement.fromPartial({})),
 						
@@ -126,6 +130,18 @@ export default {
 						(<any> params).query=null
 					}
 			return state.TimeoutAnnouncementAll[JSON.stringify(params)] ?? {}
+		},
+				getPublication: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.Publication[JSON.stringify(params)] ?? {}
+		},
+				getPublicationAll: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.PublicationAll[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -290,6 +306,52 @@ export default {
 				return getters['getTimeoutAnnouncementAll']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new SpVuexError('QueryClient:QueryTimeoutAnnouncementAll', 'API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryPublication({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params: {...key}, query=null }) {
+			try {
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryPublication( key.id)).data
+				
+					
+				commit('QUERY', { query: 'Publication', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryPublication', payload: { options: { all }, params: {...key},query }})
+				return getters['getPublication']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new SpVuexError('QueryClient:QueryPublication', 'API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryPublicationAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params: {...key}, query=null }) {
+			try {
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryPublicationAll(query)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.nextKey!=null) {
+					let next_values=(await queryClient.queryPublicationAll({...query, 'pagination.key':(<any> value).pagination.nextKey})).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'PublicationAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryPublicationAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getPublicationAll']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new SpVuexError('QueryClient:QueryPublicationAll', 'API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},

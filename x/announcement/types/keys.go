@@ -46,3 +46,8 @@ const (
 	TimeoutAnnouncementKey      = "TimeoutAnnouncement-value-"
 	TimeoutAnnouncementCountKey = "TimeoutAnnouncement-count-"
 )
+
+const (
+	PublicationKey      = "Publication-value-"
+	PublicationCountKey = "Publication-count-"
+)

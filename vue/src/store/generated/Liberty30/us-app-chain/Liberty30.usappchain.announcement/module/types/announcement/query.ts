@@ -5,6 +5,7 @@ import { Broadcast } from '../announcement/broadcast'
 import { PageRequest, PageResponse } from '../cosmos/base/query/v1beta1/pagination'
 import { SentAnnouncement } from '../announcement/sent_announcement'
 import { TimeoutAnnouncement } from '../announcement/timeout_announcement'
+import { Publication } from '../announcement/publication'
 
 export const protobufPackage = 'Liberty30.usappchain.announcement'
 
@@ -56,6 +57,23 @@ export interface QueryAllTimeoutAnnouncementRequest {
 
 export interface QueryAllTimeoutAnnouncementResponse {
   TimeoutAnnouncement: TimeoutAnnouncement[]
+  pagination: PageResponse | undefined
+}
+
+export interface QueryGetPublicationRequest {
+  id: number
+}
+
+export interface QueryGetPublicationResponse {
+  Publication: Publication | undefined
+}
+
+export interface QueryAllPublicationRequest {
+  pagination: PageRequest | undefined
+}
+
+export interface QueryAllPublicationResponse {
+  Publication: Publication[]
   pagination: PageResponse | undefined
 }
 
@@ -792,6 +810,250 @@ export const QueryAllTimeoutAnnouncementResponse = {
   }
 }
 
+const baseQueryGetPublicationRequest: object = { id: 0 }
+
+export const QueryGetPublicationRequest = {
+  encode(message: QueryGetPublicationRequest, writer: Writer = Writer.create()): Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint64(message.id)
+    }
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetPublicationRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseQueryGetPublicationRequest } as QueryGetPublicationRequest
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.id = longToNumber(reader.uint64() as Long)
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): QueryGetPublicationRequest {
+    const message = { ...baseQueryGetPublicationRequest } as QueryGetPublicationRequest
+    if (object.id !== undefined && object.id !== null) {
+      message.id = Number(object.id)
+    } else {
+      message.id = 0
+    }
+    return message
+  },
+
+  toJSON(message: QueryGetPublicationRequest): unknown {
+    const obj: any = {}
+    message.id !== undefined && (obj.id = message.id)
+    return obj
+  },
+
+  fromPartial(object: DeepPartial<QueryGetPublicationRequest>): QueryGetPublicationRequest {
+    const message = { ...baseQueryGetPublicationRequest } as QueryGetPublicationRequest
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id
+    } else {
+      message.id = 0
+    }
+    return message
+  }
+}
+
+const baseQueryGetPublicationResponse: object = {}
+
+export const QueryGetPublicationResponse = {
+  encode(message: QueryGetPublicationResponse, writer: Writer = Writer.create()): Writer {
+    if (message.Publication !== undefined) {
+      Publication.encode(message.Publication, writer.uint32(10).fork()).ldelim()
+    }
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetPublicationResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseQueryGetPublicationResponse } as QueryGetPublicationResponse
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.Publication = Publication.decode(reader, reader.uint32())
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): QueryGetPublicationResponse {
+    const message = { ...baseQueryGetPublicationResponse } as QueryGetPublicationResponse
+    if (object.Publication !== undefined && object.Publication !== null) {
+      message.Publication = Publication.fromJSON(object.Publication)
+    } else {
+      message.Publication = undefined
+    }
+    return message
+  },
+
+  toJSON(message: QueryGetPublicationResponse): unknown {
+    const obj: any = {}
+    message.Publication !== undefined && (obj.Publication = message.Publication ? Publication.toJSON(message.Publication) : undefined)
+    return obj
+  },
+
+  fromPartial(object: DeepPartial<QueryGetPublicationResponse>): QueryGetPublicationResponse {
+    const message = { ...baseQueryGetPublicationResponse } as QueryGetPublicationResponse
+    if (object.Publication !== undefined && object.Publication !== null) {
+      message.Publication = Publication.fromPartial(object.Publication)
+    } else {
+      message.Publication = undefined
+    }
+    return message
+  }
+}
+
+const baseQueryAllPublicationRequest: object = {}
+
+export const QueryAllPublicationRequest = {
+  encode(message: QueryAllPublicationRequest, writer: Writer = Writer.create()): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim()
+    }
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryAllPublicationRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseQueryAllPublicationRequest } as QueryAllPublicationRequest
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32())
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): QueryAllPublicationRequest {
+    const message = { ...baseQueryAllPublicationRequest } as QueryAllPublicationRequest
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination)
+    } else {
+      message.pagination = undefined
+    }
+    return message
+  },
+
+  toJSON(message: QueryAllPublicationRequest): unknown {
+    const obj: any = {}
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined)
+    return obj
+  },
+
+  fromPartial(object: DeepPartial<QueryAllPublicationRequest>): QueryAllPublicationRequest {
+    const message = { ...baseQueryAllPublicationRequest } as QueryAllPublicationRequest
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination)
+    } else {
+      message.pagination = undefined
+    }
+    return message
+  }
+}
+
+const baseQueryAllPublicationResponse: object = {}
+
+export const QueryAllPublicationResponse = {
+  encode(message: QueryAllPublicationResponse, writer: Writer = Writer.create()): Writer {
+    for (const v of message.Publication) {
+      Publication.encode(v!, writer.uint32(10).fork()).ldelim()
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim()
+    }
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryAllPublicationResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseQueryAllPublicationResponse } as QueryAllPublicationResponse
+    message.Publication = []
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.Publication.push(Publication.decode(reader, reader.uint32()))
+          break
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32())
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): QueryAllPublicationResponse {
+    const message = { ...baseQueryAllPublicationResponse } as QueryAllPublicationResponse
+    message.Publication = []
+    if (object.Publication !== undefined && object.Publication !== null) {
+      for (const e of object.Publication) {
+        message.Publication.push(Publication.fromJSON(e))
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination)
+    } else {
+      message.pagination = undefined
+    }
+    return message
+  },
+
+  toJSON(message: QueryAllPublicationResponse): unknown {
+    const obj: any = {}
+    if (message.Publication) {
+      obj.Publication = message.Publication.map((e) => (e ? Publication.toJSON(e) : undefined))
+    } else {
+      obj.Publication = []
+    }
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined)
+    return obj
+  },
+
+  fromPartial(object: DeepPartial<QueryAllPublicationResponse>): QueryAllPublicationResponse {
+    const message = { ...baseQueryAllPublicationResponse } as QueryAllPublicationResponse
+    message.Publication = []
+    if (object.Publication !== undefined && object.Publication !== null) {
+      for (const e of object.Publication) {
+        message.Publication.push(Publication.fromPartial(e))
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination)
+    } else {
+      message.pagination = undefined
+    }
+    return message
+  }
+}
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Queries a broadcast by id. */
@@ -806,6 +1068,10 @@ export interface Query {
   TimeoutAnnouncement(request: QueryGetTimeoutAnnouncementRequest): Promise<QueryGetTimeoutAnnouncementResponse>
   /** Queries a list of timeoutAnnouncement items. */
   TimeoutAnnouncementAll(request: QueryAllTimeoutAnnouncementRequest): Promise<QueryAllTimeoutAnnouncementResponse>
+  /** Queries a publication by id. */
+  Publication(request: QueryGetPublicationRequest): Promise<QueryGetPublicationResponse>
+  /** Queries a list of publication items. */
+  PublicationAll(request: QueryAllPublicationRequest): Promise<QueryAllPublicationResponse>
 }
 
 export class QueryClientImpl implements Query {
@@ -847,6 +1113,18 @@ export class QueryClientImpl implements Query {
     const data = QueryAllTimeoutAnnouncementRequest.encode(request).finish()
     const promise = this.rpc.request('Liberty30.usappchain.announcement.Query', 'TimeoutAnnouncementAll', data)
     return promise.then((data) => QueryAllTimeoutAnnouncementResponse.decode(new Reader(data)))
+  }
+
+  Publication(request: QueryGetPublicationRequest): Promise<QueryGetPublicationResponse> {
+    const data = QueryGetPublicationRequest.encode(request).finish()
+    const promise = this.rpc.request('Liberty30.usappchain.announcement.Query', 'Publication', data)
+    return promise.then((data) => QueryGetPublicationResponse.decode(new Reader(data)))
+  }
+
+  PublicationAll(request: QueryAllPublicationRequest): Promise<QueryAllPublicationResponse> {
+    const data = QueryAllPublicationRequest.encode(request).finish()
+    const promise = this.rpc.request('Liberty30.usappchain.announcement.Query', 'PublicationAll', data)
+    return promise.then((data) => QueryAllPublicationResponse.decode(new Reader(data)))
   }
 }
 

@@ -4,6 +4,7 @@ import { util, configure, Writer, Reader } from 'protobufjs/minimal'
 import { Broadcast } from '../announcement/broadcast'
 import { SentAnnouncement } from '../announcement/sent_announcement'
 import { TimeoutAnnouncement } from '../announcement/timeout_announcement'
+import { Publication } from '../announcement/publication'
 
 export const protobufPackage = 'Liberty30.usappchain.announcement'
 
@@ -15,11 +16,13 @@ export interface GenesisState {
   sentAnnouncementList: SentAnnouncement[]
   sentAnnouncementCount: number
   timeoutAnnouncementList: TimeoutAnnouncement[]
-  /** this line is used by starport scaffolding # genesis/proto/state */
   timeoutAnnouncementCount: number
+  publicationList: Publication[]
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  publicationCount: number
 }
 
-const baseGenesisState: object = { portId: '', broadcastCount: 0, sentAnnouncementCount: 0, timeoutAnnouncementCount: 0 }
+const baseGenesisState: object = { portId: '', broadcastCount: 0, sentAnnouncementCount: 0, timeoutAnnouncementCount: 0, publicationCount: 0 }
 
 export const GenesisState = {
   encode(message: GenesisState, writer: Writer = Writer.create()): Writer {
@@ -44,6 +47,12 @@ export const GenesisState = {
     if (message.timeoutAnnouncementCount !== 0) {
       writer.uint32(56).uint64(message.timeoutAnnouncementCount)
     }
+    for (const v of message.publicationList) {
+      Publication.encode(v!, writer.uint32(66).fork()).ldelim()
+    }
+    if (message.publicationCount !== 0) {
+      writer.uint32(72).uint64(message.publicationCount)
+    }
     return writer
   },
 
@@ -54,6 +63,7 @@ export const GenesisState = {
     message.broadcastList = []
     message.sentAnnouncementList = []
     message.timeoutAnnouncementList = []
+    message.publicationList = []
     while (reader.pos < end) {
       const tag = reader.uint32()
       switch (tag >>> 3) {
@@ -78,6 +88,12 @@ export const GenesisState = {
         case 7:
           message.timeoutAnnouncementCount = longToNumber(reader.uint64() as Long)
           break
+        case 8:
+          message.publicationList.push(Publication.decode(reader, reader.uint32()))
+          break
+        case 9:
+          message.publicationCount = longToNumber(reader.uint64() as Long)
+          break
         default:
           reader.skipType(tag & 7)
           break
@@ -91,6 +107,7 @@ export const GenesisState = {
     message.broadcastList = []
     message.sentAnnouncementList = []
     message.timeoutAnnouncementList = []
+    message.publicationList = []
     if (object.portId !== undefined && object.portId !== null) {
       message.portId = String(object.portId)
     } else {
@@ -126,6 +143,16 @@ export const GenesisState = {
     } else {
       message.timeoutAnnouncementCount = 0
     }
+    if (object.publicationList !== undefined && object.publicationList !== null) {
+      for (const e of object.publicationList) {
+        message.publicationList.push(Publication.fromJSON(e))
+      }
+    }
+    if (object.publicationCount !== undefined && object.publicationCount !== null) {
+      message.publicationCount = Number(object.publicationCount)
+    } else {
+      message.publicationCount = 0
+    }
     return message
   },
 
@@ -150,6 +177,12 @@ export const GenesisState = {
       obj.timeoutAnnouncementList = []
     }
     message.timeoutAnnouncementCount !== undefined && (obj.timeoutAnnouncementCount = message.timeoutAnnouncementCount)
+    if (message.publicationList) {
+      obj.publicationList = message.publicationList.map((e) => (e ? Publication.toJSON(e) : undefined))
+    } else {
+      obj.publicationList = []
+    }
+    message.publicationCount !== undefined && (obj.publicationCount = message.publicationCount)
     return obj
   },
 
@@ -158,6 +191,7 @@ export const GenesisState = {
     message.broadcastList = []
     message.sentAnnouncementList = []
     message.timeoutAnnouncementList = []
+    message.publicationList = []
     if (object.portId !== undefined && object.portId !== null) {
       message.portId = object.portId
     } else {
@@ -192,6 +226,16 @@ export const GenesisState = {
       message.timeoutAnnouncementCount = object.timeoutAnnouncementCount
     } else {
       message.timeoutAnnouncementCount = 0
+    }
+    if (object.publicationList !== undefined && object.publicationList !== null) {
+      for (const e of object.publicationList) {
+        message.publicationList.push(Publication.fromPartial(e))
+      }
+    }
+    if (object.publicationCount !== undefined && object.publicationCount !== null) {
+      message.publicationCount = object.publicationCount
+    } else {
+      message.publicationCount = 0
     }
     return message
   }

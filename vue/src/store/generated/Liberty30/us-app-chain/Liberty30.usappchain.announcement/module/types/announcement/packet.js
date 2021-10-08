@@ -103,7 +103,7 @@ export const NoData = {
         return message;
     }
 };
-const baseIbcBatchPacketData = { announcementType: '', fileHash: '', fileUrl: '', creator: '' };
+const baseIbcBatchPacketData = { announcementType: '', fileHash: '', fileUrl: '', creator: '', refId: '' };
 export const IbcBatchPacketData = {
     encode(message, writer = Writer.create()) {
         if (message.announcementType !== '') {
@@ -117,6 +117,9 @@ export const IbcBatchPacketData = {
         }
         if (message.creator !== '') {
             writer.uint32(34).string(message.creator);
+        }
+        if (message.refId !== '') {
+            writer.uint32(42).string(message.refId);
         }
         return writer;
     },
@@ -138,6 +141,9 @@ export const IbcBatchPacketData = {
                     break;
                 case 4:
                     message.creator = reader.string();
+                    break;
+                case 5:
+                    message.refId = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -172,6 +178,12 @@ export const IbcBatchPacketData = {
         else {
             message.creator = '';
         }
+        if (object.refId !== undefined && object.refId !== null) {
+            message.refId = String(object.refId);
+        }
+        else {
+            message.refId = '';
+        }
         return message;
     },
     toJSON(message) {
@@ -180,6 +192,7 @@ export const IbcBatchPacketData = {
         message.fileHash !== undefined && (obj.fileHash = message.fileHash);
         message.fileUrl !== undefined && (obj.fileUrl = message.fileUrl);
         message.creator !== undefined && (obj.creator = message.creator);
+        message.refId !== undefined && (obj.refId = message.refId);
         return obj;
     },
     fromPartial(object) {
@@ -208,14 +221,23 @@ export const IbcBatchPacketData = {
         else {
             message.creator = '';
         }
+        if (object.refId !== undefined && object.refId !== null) {
+            message.refId = object.refId;
+        }
+        else {
+            message.refId = '';
+        }
         return message;
     }
 };
-const baseIbcBatchPacketAck = { batchId: '' };
+const baseIbcBatchPacketAck = { batchId: '', refId: '' };
 export const IbcBatchPacketAck = {
     encode(message, writer = Writer.create()) {
         if (message.batchId !== '') {
             writer.uint32(10).string(message.batchId);
+        }
+        if (message.refId !== '') {
+            writer.uint32(18).string(message.refId);
         }
         return writer;
     },
@@ -228,6 +250,9 @@ export const IbcBatchPacketAck = {
             switch (tag >>> 3) {
                 case 1:
                     message.batchId = reader.string();
+                    break;
+                case 2:
+                    message.refId = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -244,11 +269,18 @@ export const IbcBatchPacketAck = {
         else {
             message.batchId = '';
         }
+        if (object.refId !== undefined && object.refId !== null) {
+            message.refId = String(object.refId);
+        }
+        else {
+            message.refId = '';
+        }
         return message;
     },
     toJSON(message) {
         const obj = {};
         message.batchId !== undefined && (obj.batchId = message.batchId);
+        message.refId !== undefined && (obj.refId = message.refId);
         return obj;
     },
     fromPartial(object) {
@@ -258,6 +290,12 @@ export const IbcBatchPacketAck = {
         }
         else {
             message.batchId = '';
+        }
+        if (object.refId !== undefined && object.refId !== null) {
+            message.refId = object.refId;
+        }
+        else {
+            message.refId = '';
         }
         return message;
     }

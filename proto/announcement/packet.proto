@@ -6,11 +6,11 @@ package Liberty30.usappchain.announcement;
 option go_package = "github.com/Liberty30/us-app-chain/x/announcement/types";
 
 message AnnouncementPacketData {
-    oneof packet {
-        NoData noData = 1;
-        // this line is used by starport scaffolding # ibc/packet/proto/field
-				IbcBatchPacketData ibcBatchPacket = 2; // this line is used by starport scaffolding # ibc/packet/proto/field/number
-    }
+  oneof packet {
+    NoData noData = 1;
+    // this line is used by starport scaffolding # ibc/packet/proto/field
+    IbcBatchPacketData ibcBatchPacket = 2; // this line is used by starport scaffolding # ibc/packet/proto/field/number
+  }
 }
 
 message NoData {
@@ -22,10 +22,12 @@ message IbcBatchPacketData {
   string fileHash = 2;
   string fileUrl = 3;
   string creator = 4;
+  string refId = 5;
 }
 
 // IbcBatchPacketAck defines a struct for the packet acknowledgment
 message IbcBatchPacketAck {
-	  string batchId = 1;
+  string batchId = 1;
+  string refId = 2;
 }
 // this line is used by starport scaffolding # ibc/packet/proto/message

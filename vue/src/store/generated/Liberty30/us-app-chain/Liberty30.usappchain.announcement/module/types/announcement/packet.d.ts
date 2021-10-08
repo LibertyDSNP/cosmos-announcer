@@ -13,10 +13,12 @@ export interface IbcBatchPacketData {
     fileHash: string;
     fileUrl: string;
     creator: string;
+    refId: string;
 }
 /** IbcBatchPacketAck defines a struct for the packet acknowledgment */
 export interface IbcBatchPacketAck {
     batchId: string;
+    refId: string;
 }
 export declare const AnnouncementPacketData: {
     encode(message: AnnouncementPacketData, writer?: Writer): Writer;

@@ -37,6 +37,13 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 
 	// Set publication count
 	k.SetPublicationCount(ctx, genState.PublicationCount)
+	// Set all the relayRegistry
+	for _, elem := range genState.RelayRegistryList {
+		k.SetRelayRegistry(ctx, elem)
+	}
+
+	// Set relayRegistry count
+	k.SetRelayRegistryCount(ctx, genState.RelayRegistryCount)
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetPort(ctx, genState.PortId)
 	// Only try to bind to port if it is not already bound, since we may already own
@@ -64,6 +71,8 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.TimeoutAnnouncementCount = k.GetTimeoutAnnouncementCount(ctx)
 	genesis.PublicationList = k.GetAllPublication(ctx)
 	genesis.PublicationCount = k.GetPublicationCount(ctx)
+	genesis.RelayRegistryList = k.GetAllRelayRegistry(ctx)
+	genesis.RelayRegistryCount = k.GetRelayRegistryCount(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

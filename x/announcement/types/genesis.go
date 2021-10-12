@@ -16,6 +16,7 @@ func DefaultGenesis() *GenesisState {
 		SentAnnouncementList:    []SentAnnouncement{},
 		TimeoutAnnouncementList: []TimeoutAnnouncement{},
 		PublicationList:         []Publication{},
+		RelayRegistryList:       []RelayRegistry{},
 		// this line is used by starport scaffolding # genesis/types/default
 	}
 }
@@ -73,6 +74,18 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("publication id should be lower or equal than the last id")
 		}
 		publicationIdMap[elem.Id] = true
+	}
+	// Check for duplicated ID in relayRegistry
+	relayRegistryIdMap := make(map[uint64]bool)
+	relayRegistryCount := gs.GetRelayRegistryCount()
+	for _, elem := range gs.RelayRegistryList {
+		if _, ok := relayRegistryIdMap[elem.Id]; ok {
+			return fmt.Errorf("duplicated id for relayRegistry")
+		}
+		if elem.Id >= relayRegistryCount {
+			return fmt.Errorf("relayRegistry id should be lower or equal than the last id")
+		}
+		relayRegistryIdMap[elem.Id] = true
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

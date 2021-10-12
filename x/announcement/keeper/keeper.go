@@ -40,6 +40,10 @@ func NewKeeper(
 	}
 }
 
+func (k Keeper) GetOpenChannels(ctx sdk.Context) {
+	ctx.KVStore(k.channelKeeper.storeKey)
+}
+
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }

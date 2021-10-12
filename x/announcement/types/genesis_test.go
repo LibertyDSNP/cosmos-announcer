@@ -58,6 +58,15 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 				PublicationCount: 2,
+				RelayRegistryList: []types.RelayRegistry{
+					{
+						Id: 0,
+					},
+					{
+						Id: 1,
+					},
+				},
+				RelayRegistryCount: 2,
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -163,6 +172,32 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 				PublicationCount: 0,
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated relayRegistry",
+			genState: &types.GenesisState{
+				RelayRegistryList: []types.RelayRegistry{
+					{
+						Id: 0,
+					},
+					{
+						Id: 0,
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "invalid relayRegistry count",
+			genState: &types.GenesisState{
+				RelayRegistryList: []types.RelayRegistry{
+					{
+						Id: 1,
+					},
+				},
+				RelayRegistryCount: 0,
 			},
 			valid: false,
 		},

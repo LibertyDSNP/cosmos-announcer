@@ -31,6 +31,9 @@ func GetTxCmd() *cobra.Command {
 
 	cmd.AddCommand(CmdSendIbcBatch())
 	cmd.AddCommand(CmdCreateBroadcast())
+	cmd.AddCommand(CmdCreateRelayRegistry())
+	cmd.AddCommand(CmdUpdateRelayRegistry())
+	cmd.AddCommand(CmdDeleteRelayRegistry())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

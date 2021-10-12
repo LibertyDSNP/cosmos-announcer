@@ -51,3 +51,8 @@ const (
 	PublicationKey      = "Publication-value-"
 	PublicationCountKey = "Publication-count-"
 )
+
+const (
+	RelayRegistryKey      = "RelayRegistry-value-"
+	RelayRegistryCountKey = "RelayRegistry-count-"
+)

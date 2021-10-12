@@ -1,6 +1,7 @@
 syntax = "proto3";
 package Liberty30.usappchain.announcement;
 
+import "announcement/relay_registry.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/Liberty30/us-app-chain/x/announcement/types";
@@ -9,6 +10,9 @@ option go_package = "github.com/Liberty30/us-app-chain/x/announcement/types";
 service Msg {
       rpc SendIbcBatch(MsgSendIbcBatch) returns (MsgSendIbcBatchResponse);
   rpc CreateBroadcast(MsgCreateBroadcast) returns (MsgCreateBroadcastResponse);
+rpc CreateRelayRegistry(MsgCreateRelayRegistry) returns (MsgCreateRelayRegistryResponse);
+  rpc UpdateRelayRegistry(MsgUpdateRelayRegistry) returns (MsgUpdateRelayRegistryResponse);
+  rpc DeleteRelayRegistry(MsgDeleteRelayRegistry) returns (MsgDeleteRelayRegistryResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -34,5 +38,31 @@ message MsgCreateBroadcast {
 message MsgCreateBroadcastResponse {
   string dsnpAnnouncmentUri = 1;
 }
+
+message MsgCreateRelayRegistry {
+  string creator = 1;
+  string owner = 2;
+  string destChannel = 3;
+}
+
+message MsgCreateRelayRegistryResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdateRelayRegistry {
+  string creator = 1;
+  uint64 id = 2;
+  string owner = 3;
+  string destChannel = 4;
+}
+
+message MsgUpdateRelayRegistryResponse {}
+
+message MsgDeleteRelayRegistry {
+  string creator = 1;
+  uint64 id = 2;
+}
+
+message MsgDeleteRelayRegistryResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message

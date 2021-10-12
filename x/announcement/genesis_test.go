@@ -48,6 +48,15 @@ func TestGenesis(t *testing.T) {
 			},
 		},
 		PublicationCount: 2,
+		RelayRegistryList: []types.RelayRegistry{
+			{
+				Id: 0,
+			},
+			{
+				Id: 1,
+			},
+		},
+		RelayRegistryCount: 2,
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -69,5 +78,8 @@ func TestGenesis(t *testing.T) {
 	require.Len(t, got.PublicationList, len(genesisState.PublicationList))
 	require.Subset(t, genesisState.PublicationList, got.PublicationList)
 	require.Equal(t, genesisState.PublicationCount, got.PublicationCount)
+	require.Len(t, got.RelayRegistryList, len(genesisState.RelayRegistryList))
+	require.Subset(t, genesisState.RelayRegistryList, got.RelayRegistryList)
+	require.Equal(t, genesisState.RelayRegistryCount, got.RelayRegistryCount)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

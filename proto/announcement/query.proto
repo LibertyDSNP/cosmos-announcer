@@ -7,6 +7,7 @@ import "announcement/broadcast.proto";
 import "announcement/sent_announcement.proto";
 import "announcement/timeout_announcement.proto";
 import "announcement/publication.proto";
+import "announcement/relay_registry.proto";
 // this line is used by starport scaffolding # 1
 import "gogoproto/gogo.proto";
 
@@ -52,6 +53,16 @@ service Query {
 	// Queries a list of publication items.
 	rpc PublicationAll(QueryAllPublicationRequest) returns (QueryAllPublicationResponse) {
 		option (google.api.http).get = "/Liberty30/usappchain/announcement/publication";
+	}
+
+// Queries a relayRegistry by id.
+	rpc RelayRegistry(QueryGetRelayRegistryRequest) returns (QueryGetRelayRegistryResponse) {
+		option (google.api.http).get = "/Liberty30/usappchain/announcement/relayRegistry/{id}";
+	}
+
+	// Queries a list of relayRegistry items.
+	rpc RelayRegistryAll(QueryAllRelayRegistryRequest) returns (QueryAllRelayRegistryResponse) {
+		option (google.api.http).get = "/Liberty30/usappchain/announcement/relayRegistry";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -122,6 +133,23 @@ message QueryAllPublicationRequest {
 
 message QueryAllPublicationResponse {
 	repeated Publication Publication = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetRelayRegistryRequest {
+	uint64 id = 1;
+}
+
+message QueryGetRelayRegistryResponse {
+	RelayRegistry RelayRegistry = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllRelayRegistryRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllRelayRegistryResponse {
+	repeated RelayRegistry RelayRegistry = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

@@ -12698,6 +12698,7 @@ paths:
                       format: uint64
                     batchId:
                       type: string
+                      format: uint64
                     announcementType:
                       type: string
                     fileHash:
@@ -12823,6 +12824,7 @@ paths:
                     format: uint64
                   batchId:
                     type: string
+                    format: uint64
                   announcementType:
                     type: string
                   fileHash:
@@ -20513,6 +20515,11 @@ definitions:
         type: string
       signature:
         type: string
+  Liberty30.usappchain.announcement.MsgCreateBroadcastResponse:
+    type: object
+    properties:
+      dsnpAnnouncmentUri:
+        type: string
   Liberty30.usappchain.announcement.MsgSendIbcBatchResponse:
     type: object
   Liberty30.usappchain.announcement.Publication:
@@ -20523,6 +20530,7 @@ definitions:
         format: uint64
       batchId:
         type: string
+        format: uint64
       announcementType:
         type: string
       fileHash:
@@ -20586,6 +20594,7 @@ definitions:
               format: uint64
             batchId:
               type: string
+              format: uint64
             announcementType:
               type: string
             fileHash:
@@ -20721,6 +20730,7 @@ definitions:
             format: uint64
           batchId:
             type: string
+            format: uint64
           announcementType:
             type: string
           fileHash:

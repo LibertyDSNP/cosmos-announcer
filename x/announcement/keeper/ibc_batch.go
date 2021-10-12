@@ -29,6 +29,9 @@ func (k Keeper) TransmitIbcBatchPacket(
 	destinationPort := sourceChannelEnd.GetCounterparty().GetPortID()
 	destinationChannel := sourceChannelEnd.GetCounterparty().GetChannelID()
 
+	println("destinationPort", destinationPort)
+	println("destinationChannel", destinationChannel)
+
 	// get the next sequence
 	sequence, found := k.channelKeeper.GetNextSequenceSend(ctx, sourcePort, sourceChannel)
 	if !found {
@@ -75,6 +78,8 @@ func (k Keeper) OnRecvIbcBatchPacket(ctx sdk.Context, packet channeltypes.Packet
 
 	// TODO: packet reception logic
 
+	// DON'T EVER RECEIVE A BATCH
+
 	return packetAck, nil
 }
 
@@ -97,7 +102,17 @@ func (k Keeper) OnAcknowledgementIbcBatchPacket(ctx sdk.Context, packet channelt
 			return errors.New("cannot unmarshal acknowledgment")
 		}
 
-		// TODO: successful acknowledgement logic
+		// successful acknowledgement logic
+
+		// Look up based on refId
+		publication, found := k.GetPublication(ctx, packetAck.RefId)
+		if !found {
+			return errors.New("Unable to locate original publication")
+		}
+
+		publication.BatchId = packetAck.BatchId
+
+		k.SetPublication(ctx, publication)
 
 		return nil
 	default:

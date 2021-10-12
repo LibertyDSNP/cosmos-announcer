@@ -21,6 +21,13 @@ func (k msgServer) SendIbcBatch(goCtx context.Context, msg *types.MsgSendIbcBatc
 	packet.FileUrl = msg.FileUrl
 	packet.Creator = msg.Creator
 
+	// Append the new Batch
+	packet.RefId = k.AppendPublication(ctx, types.Publication{
+		AnnouncementType: msg.AnnouncementType,
+		FileHash:         msg.FileHash,
+		FileUrl:          msg.FileUrl,
+	})
+
 	// Transmit the packet
 	err := k.TransmitIbcBatchPacket(
 		ctx,

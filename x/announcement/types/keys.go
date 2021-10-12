@@ -17,7 +17,7 @@ const (
 	MemStoreKey = "mem_announcement"
 
 	// Version defines the current version the IBC module supports
-	Version = "announcement-1"
+	Version = "batch-1"
 
 	// PortID is the default port id that module binds to
 	PortID = "announcement"
@@ -25,7 +25,7 @@ const (
 
 var (
 	// PortKey defines the key to store the port ID in store
-	PortKey = KeyPrefix("announcement-port-")
+	PortKey = KeyPrefix("batch-port-")
 )
 
 func KeyPrefix(p string) []byte {

@@ -8,6 +8,7 @@ option go_package = "github.com/Liberty30/us-app-chain/x/announcement/types";
 // Msg defines the Msg service.
 service Msg {
       rpc SendIbcBatch(MsgSendIbcBatch) returns (MsgSendIbcBatchResponse);
+  rpc CreateBroadcast(MsgCreateBroadcast) returns (MsgCreateBroadcastResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -23,4 +24,15 @@ message MsgSendIbcBatch {
 
 message MsgSendIbcBatchResponse {
 }
+message MsgCreateBroadcast {
+  string creator = 1;
+  string fromId = 2;
+  string url = 3;
+  string contentHash = 4;
+}
+
+message MsgCreateBroadcastResponse {
+  string dsnpAnnouncmentUri = 1;
+}
+
 // this line is used by starport scaffolding # proto/tx/message

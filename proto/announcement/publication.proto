@@ -8,9 +8,8 @@ import "gogoproto/gogo.proto";
 
 message Publication {
   uint64 id = 1;
-  string batchId = 2; 
-  string announcementType = 3; 
-  string fileHash = 4; 
-  string fileUrl = 5; 
-  
+  uint64 batchId = 2;
+  string announcementType = 3;
+  string fileHash = 4;
+  string fileUrl = 5;
 }

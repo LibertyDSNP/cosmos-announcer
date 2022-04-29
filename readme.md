@@ -1,5 +1,6 @@
-# usappchain
-**usappchain** is a blockchain built using Cosmos SDK and Tendermint and created with [Starport](https://github.com/tendermint/starport).
+# Experimental Cosomos baesd multi-chain structure
+
+Built using Cosmos SDK and Tendermint and created with [Starport](https://github.com/tendermint/starport).
 
 ## Get started
 
